@@ -48,9 +48,6 @@ export default function Portfolio() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="flex justify-center mb-4">
-            <div className="h-1 w-12 bg-accent rounded-full"></div>
-          </div>
           <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 text-balance">
             Portfolio
           </h2>

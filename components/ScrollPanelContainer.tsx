@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 interface ScrollPanelContainerProps {
-  children: React.ReactNode[];
+  children: [React.ReactNode, React.ReactNode, ...React.ReactNode[]];
 }
 
 export default function ScrollPanelContainer({ children }: ScrollPanelContainerProps) {
@@ -16,18 +16,20 @@ export default function ScrollPanelContainer({ children }: ScrollPanelContainerP
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const sections = gsap.utils.toArray<HTMLElement>(".scroll-panel");
-    
-    // Stacked effect: each panel stays pinned while the next one comes up
-    sections.forEach((section, i) => {
+    const panels = gsap.utils.toArray<HTMLElement>(".scroll-panel");
+    const firstPanel = panels[0];
+    const secondPanel = panels[1];
+
+    if (firstPanel && secondPanel) {
+      // Pin only the first panel (About) while the second one (Portfolio) scrolls over it
       ScrollTrigger.create({
-        trigger: section,
+        trigger: firstPanel,
         start: "top top",
+        end: () => `+=${secondPanel.offsetHeight}`,
         pin: true,
         pinSpacing: false,
-        snap: i === sections.length - 1 ? undefined : 1,
       });
-    });
+    }
 
     return () => {
       ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -36,11 +38,15 @@ export default function ScrollPanelContainer({ children }: ScrollPanelContainerP
 
   return (
     <div ref={containerRef} className="relative bg-background">
-      {children.map((child, index) => (
-        <div key={index} className="scroll-panel w-full min-h-screen relative overflow-hidden bg-background">
-          {child}
-        </div>
-      ))}
+      {/* First panel: Pinned */}
+      <div className="scroll-panel w-full min-h-screen relative overflow-hidden bg-background z-10">
+        {children[0]}
+      </div>
+      
+      {/* Rest of the content: Scrolls normally over/after the pinned section */}
+      <div className="scroll-panel w-full relative bg-background z-20">
+        {children.slice(1)}
+      </div>
     </div>
   );
 }
