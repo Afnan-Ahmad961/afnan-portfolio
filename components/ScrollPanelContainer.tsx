@@ -16,24 +16,24 @@ export default function ScrollPanelContainer({ children }: ScrollPanelContainerP
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const panels = gsap.utils.toArray<HTMLElement>(".scroll-panel");
-    const firstPanel = panels[0];
-    const secondPanel = panels[1];
+    const ctx = gsap.context(() => {
+      const panels = gsap.utils.toArray<HTMLElement>(".scroll-panel", containerRef.current);
+      const firstPanel = panels[0];
+      const secondPanel = panels[1];
 
-    if (firstPanel && secondPanel) {
-      // Pin only the first panel (About) while the second one (Portfolio) scrolls over it
-      ScrollTrigger.create({
-        trigger: firstPanel,
-        start: "top top",
-        end: () => `+=${secondPanel.offsetHeight}`,
-        pin: true,
-        pinSpacing: false,
-      });
-    }
+      if (firstPanel && secondPanel) {
+        // Pin only the first panel (About) while the second one (Portfolio) scrolls over it
+        ScrollTrigger.create({
+          trigger: firstPanel,
+          start: "top top",
+          end: () => `+=${secondPanel.offsetHeight}`,
+          pin: true,
+          pinSpacing: false,
+        });
+      }
+    }, containerRef.current);
 
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
