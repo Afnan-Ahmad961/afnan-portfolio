@@ -70,7 +70,7 @@ const Workflow = () => {
       {/* Background/Fixed Person - Centered Vertically */}
       <div
         ref={personRef}
-        className="hidden md:block absolute right-[5%] top-1/2 -translate-y-1/2 w-[22vw] h-[65vh] z-50 pointer-events-none"
+        className="hidden md:block absolute right-[5%] top-[57%] -translate-y-1/2 w-[22vw] h-[65vh] z-50 pointer-events-none"
       >
         <Image
           src="/person-dummy.png"

@@ -117,16 +117,18 @@
 }
 
 @layer base {
+  *::-webkit-scrollbar {
+    display: none;
+  }
+  * {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
   * {
     @apply border-border outline-ring/50;
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-  }
-  body::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
   }
 }
