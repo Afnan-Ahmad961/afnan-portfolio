@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import LogoLoop from "@/components/LogoLoop";
+import { motion } from "framer-motion";
 
 export default function About() {
   const imageLogos = [
@@ -20,14 +21,19 @@ export default function About() {
 
 
   return (
-    <section className="min-h-screen bg-background py-16 px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen bg-background py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         {/* Main About Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
           {/* Left: Image */}
-          <div className="relative h-96 w-full lg:h-full lg:min-h-96 flex items-center justify-center">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true }}
+            className="relative h-96 w-full lg:h-full lg:min-h-96 flex items-center justify-center"
+          >
             <div className="relative w-full h-full max-w-sm">
-              {/* <div className="absolute inset-0  rounded-2xl"></div> */}
               <Image
                 src="/about_image.jpg"
                 alt="Profile"
@@ -36,10 +42,16 @@ export default function About() {
                 priority
               />
             </div>
-          </div>
+          </motion.div>
 
           {/* Right: Content */}
-          <div className="space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            viewport={{ once: true }}
+            className="space-y-6"
+          >
             <div>
               <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-2">
                 Who am I?
@@ -58,7 +70,13 @@ export default function About() {
             </p>
 
             {/* Technologies Section */}
-            <div className="space-y-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
               <div>
                 <h2 className="text-3xl font-bold text-foreground mb-2">
                   Technologies
@@ -67,7 +85,6 @@ export default function About() {
               </div>
 
               {/* Animated Logo Loop */}
-
               <LogoLoop
                 logos={imageLogos}
                 speed={150}
@@ -80,8 +97,8 @@ export default function About() {
                 fadeOutColor="#0c0a09"
                 ariaLabel="Technology partners"
               />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

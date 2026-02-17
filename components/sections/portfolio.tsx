@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { ExternalLink } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface PortfolioItem {
   title: string;
@@ -47,20 +48,30 @@ export default function Portfolio() {
     <section className="min-h-screen bg-background py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
           <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 text-balance">
             Portfolio
           </h2>
           <p className="text-lg text-muted-foreground">
             A collection of my recent work
           </p>
-        </div>
+        </motion.div>
 
         {/* Portfolio Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {portfolioItems.map((item, idx) => (
-            <div
+            <motion.div
               key={idx}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              viewport={{ once: true }}
               className="group rounded-2xl overflow-hidden border border-border bg-card/50 backdrop-blur-sm hover:border-accent/50 transition-all duration-300 hover:shadow-lg"
             >
               {/* Image Container */}
@@ -73,7 +84,7 @@ export default function Portfolio() {
                 />
                 {/* Build Complete Badge */}
                 <div className="absolute top-4 right-4 z-10">
-                  <button className="px-4 py-2 bg-accent text-accent-foreground text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity duration-200 uppercase tracking-wider">
+                  <button className="px-4 py-2 bg-primary/60 text-accent-foreground text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity duration-200 uppercase tracking-wider">
                     Build Complete
                   </button>
                 </div>
@@ -106,13 +117,13 @@ export default function Portfolio() {
                 {/* Live Demo Button */}
                 <button
                   onClick={() => window.open(item.url, '_blank')}
-                  className="w-full py-3 px-4 bg-card/80 border border-border rounded-lg text-foreground font-medium hover:bg-card hover:border-accent/50 transition-all duration-200 flex items-center justify-center gap-2 group/btn"
+                  className="w-full py-3 px-4 bg-primary border border-border rounded-lg text-foreground font-medium hover:bg-transparent hover:border-primary hover:cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 group/btn"
                 >
                   <ExternalLink className="w-4 h-4" />
                   <span>Live Demo</span>
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
