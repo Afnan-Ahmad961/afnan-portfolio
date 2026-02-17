@@ -84,7 +84,7 @@ export default function Portfolio() {
                 />
                 {/* Build Complete Badge */}
                 <div className="absolute top-4 right-4 z-10">
-                  <button className="px-4 py-2 bg-accent text-accent-foreground text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity duration-200 uppercase tracking-wider">
+                  <button className="px-4 py-2 bg-primary/60 text-accent-foreground text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity duration-200 uppercase tracking-wider">
                     Build Complete
                   </button>
                 </div>
@@ -117,7 +117,7 @@ export default function Portfolio() {
                 {/* Live Demo Button */}
                 <button
                   onClick={() => window.open(item.url, '_blank')}
-                  className="w-full py-3 px-4 bg-card/80 border border-border rounded-lg text-foreground font-medium hover:bg-card hover:border-accent/50 transition-all duration-200 flex items-center justify-center gap-2 group/btn"
+                  className="w-full py-3 px-4 bg-primary border border-border rounded-lg text-foreground font-medium hover:bg-transparent hover:border-primary hover:cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 group/btn"
                 >
                   <ExternalLink className="w-4 h-4" />
                   <span>Live Demo</span>
