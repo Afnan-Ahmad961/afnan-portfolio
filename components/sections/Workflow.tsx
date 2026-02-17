@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,7 +15,6 @@ const Workflow = () => {
   const expContainerRef = useRef<HTMLDivElement>(null);
   const exp1Ref = useRef<HTMLDivElement>(null);
   const exp2Ref = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     // Only run animation on desktop (md and above)
@@ -30,17 +29,15 @@ const Workflow = () => {
           end: "+=400%",
           pin: true,
           scrub: 1,
-          onUpdate: (self) => setScrollProgress(Math.round(self.progress * 100)),
         },
       });
 
       // Reset initial states
       gsap.set([exp1Ref.current, exp2Ref.current, expContainerRef.current], { opacity: 0 });
 
-      // Phase 1: Person moves Right to Left, Bento slides RIGHT
+      // Phase 1: Person moves Right to Left (X only), Bento slides RIGHT
       tl.to(bentoRef.current, { x: "100vw", opacity: 0, duration: 2 }, "start")
-        // Image lower on Y axis: adding y: "15vh"
-        .to(personRef.current, { x: "-65vw", y: "15vh", ease: "power2.inOut", duration: 2 }, "start")
+        .to(personRef.current, { x: "-65vw", ease: "power2.inOut", duration: 2 }, "start")
         
         // Phase 1b: Work Experience Header & Intern Content slide in
         .to(expContainerRef.current, { opacity: 1, duration: 0.5 }, "start+=1.2")
@@ -51,9 +48,8 @@ const Workflow = () => {
           "start+=1.2"
         )
 
-      // Phase 2: Person moves Left to Right, Intern slides out, Junior slides in
-      // Ending y remains 15vh to stay lower
-      tl.to(personRef.current, { x: "0vw", y: "15vh", ease: "power2.inOut", duration: 2 }, "next")
+      // Phase 2: Person moves Left to Right (Junior Part)
+      tl.to(personRef.current, { x: "-5vw", ease: "power2.inOut", duration: 2 }, "next")
         .to(exp1Ref.current, { x: "50%", opacity: 0, ease: "power2.in", duration: 1 }, "next")
         .fromTo(
           exp2Ref.current,
@@ -71,25 +67,10 @@ const Workflow = () => {
       ref={sectionRef}
       className="relative h-screen w-full bg-background overflow-hidden flex items-center justify-center"
     >
-      {/* Scroll Percentage Indicator - Improved Design */}
-      <div className="hidden md:flex fixed bottom-12 right-12 z-[100] flex-col items-end pointer-events-none">
-        <div className="flex items-baseline gap-1 font-mono text-primary group transition-all duration-300">
-          <span className="text-5xl font-black tracking-tighter tabular-nums drop-shadow-[0_0_15px_rgba(var(--primary),0.3)]">{scrollProgress}</span>
-          <span className="text-lg font-bold opacity-50">%</span>
-        </div>
-        <div className="w-32 h-1 bg-muted mt-2 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-primary transition-all duration-150 ease-out shadow-[0_0_10px_rgba(var(--primary),0.5)]" 
-            style={{ width: `${scrollProgress}%` }}
-          />
-        </div>
-      </div>
-
-      {/* Background/Fixed Person - Adjusted initial right position */}
+      {/* Background/Fixed Person - Centered Vertically */}
       <div
         ref={personRef}
-        className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[22vw] h-[65vh] z-50 pointer-events-none"
-        style={{ transform: "translateY(-40%)" }} // Shift down slightly via style initially
+        className="hidden md:block absolute right-[5%] top-1/2 -translate-y-1/2 w-[22vw] h-[65vh] z-50 pointer-events-none"
       >
         <Image
           src="/person-dummy.png"
@@ -105,10 +86,6 @@ const Workflow = () => {
         
         {/* Phase 0: Workflow Grid */}
         <div ref={bentoRef} className="w-full max-h-[90vh] flex flex-col items-center justify-center">
-          <div className="text-center mb-8">
-            <h2 className="text-4xl md:text-5xl font-bold mb-2">Workflow</h2>
-            <p className="text-lg md:text-xl text-muted-foreground">My Approach to Development</p>
-          </div>
           <div className="w-full scale-[0.8] lg:scale-90 origin-center">
             <MagicBento
               textAutoHide={true}

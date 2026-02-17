@@ -154,7 +154,11 @@ const ParticleCard: React.FC<{
         ease: 'back.in(1.7)',
         onComplete: () => {
           if (particle && particle.parentNode) {
-            particle.parentNode.removeChild(particle);
+            try {
+              particle.parentNode.removeChild(particle);
+            } catch (e) {
+              // Silently ignore if already removed
+            }
           }
         }
       });
@@ -322,7 +326,11 @@ const ParticleCard: React.FC<{
           ease: 'power2.out',
           onComplete: () => {
             if (ripple && ripple.parentNode) {
-              ripple.remove();
+              try {
+                ripple.parentNode.removeChild(ripple);
+              } catch (e) {
+                // Silently ignore
+              }
             }
           }
         }
@@ -487,7 +495,11 @@ const GlobalSpotlight: React.FC<{
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
       if (spotlightRef.current && spotlightRef.current.parentNode) {
-        spotlightRef.current.parentNode.removeChild(spotlightRef.current);
+        try {
+          spotlightRef.current.parentNode.removeChild(spotlightRef.current);
+        } catch (e) {
+          // Silently ignore
+        }
       }
     };
   }, [gridRef, disableAnimations, enabled, spotlightRadius, glowColor]);
@@ -834,7 +846,11 @@ const MagicBento: React.FC<BentoProps> = ({
                         ease: 'power2.out',
                         onComplete: () => {
                           if (ripple && ripple.parentNode) {
-                            ripple.remove();
+                            try {
+                              ripple.parentNode.removeChild(ripple);
+                            } catch (e) {
+                              // Silently ignore
+                            }
                           }
                         }
                       }
