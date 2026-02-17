@@ -12,6 +12,7 @@
     "@types/gsap": "^3.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.34.1",
     "gsap": "^3.14.2",
     "lucide-react": "^0.564.0",
     "next": "16.1.6",
