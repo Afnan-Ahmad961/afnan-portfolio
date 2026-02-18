@@ -3,6 +3,7 @@ import Portfolio from "@/components/sections/portfolio";
 import ScrollPanelContainer from "@/components/ScrollPanelContainer";
 import Workflow from "@/components/sections/Workflow";
 import ScrollProgress from "@/components/ScrollProgress";
+import Contact from "@/components/sections/Contact";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <About key="about" />
         <Portfolio key="portfolio" />
         <Workflow key="workflow" />
+        <Contact key="contact" />
       </ScrollPanelContainer>
     </>
   );
