@@ -1,16 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const ScrollProgress = () => {
   const [progress, setProgress] = useState(0);
+
+  const isJumping = useRef(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrolled = (winScroll / height) * 100;
+
       setProgress(Math.round(scrolled));
+
+      if (isJumping.current || lastScrollY.current === winScroll) return;
+
+      const isScrollingDown = winScroll > lastScrollY.current;
+
+      if (isScrollingDown && scrolled >= 10 && scrolled < 15) {
+        // Jump to 20% when scrolling down past 10%
+        isJumping.current = true;
+        window.scrollTo({ top: height * 0.20, behavior: "smooth" });
+        setTimeout(() => { isJumping.current = false; }, 1000);
+      } else if (!isScrollingDown && scrolled <= 20 && scrolled > 15) {
+        // Jump to 10% when scrolling up past 20%
+        isJumping.current = true;
+        window.scrollTo({ top: height * 0.10, behavior: "smooth" });
+        setTimeout(() => { isJumping.current = false; }, 1000);
+      }
+
+      lastScrollY.current = winScroll;
     };
 
     window.addEventListener("scroll", handleScroll);
