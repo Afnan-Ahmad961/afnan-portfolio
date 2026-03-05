@@ -11,6 +11,9 @@ gsap.registerPlugin(ScrollTrigger);
 const Workflow = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const personRef = useRef<HTMLDivElement>(null);
+  const img1Ref = useRef<HTMLDivElement>(null);
+  const img2Ref = useRef<HTMLDivElement>(null);
+  const img3Ref = useRef<HTMLDivElement>(null);
   const bentoRef = useRef<HTMLDivElement>(null);
   const expContainerRef = useRef<HTMLDivElement>(null);
   const exp1Ref = useRef<HTMLDivElement>(null);
@@ -34,11 +37,16 @@ const Workflow = () => {
 
       // Reset initial states
       gsap.set([exp1Ref.current, exp2Ref.current, expContainerRef.current], { opacity: 0 });
+      gsap.set(img1Ref.current, { opacity: 1 });
+      gsap.set([img2Ref.current, img3Ref.current], { opacity: 0 });
 
       // Phase 1: Person moves Right to Left (X only), Bento slides RIGHT
       tl.to(bentoRef.current, { x: "100vw", opacity: 0, duration: 2 }, "start")
-        .to(personRef.current, { x: "-65vw", ease: "power2.inOut", duration: 2 }, "start")
-        
+        .to(personRef.current, { x: "-55vw", ease: "power2.inOut", duration: 2 }, "start")
+        // Crossfade me_1 -> me_2
+        .to(img1Ref.current, { opacity: 0, duration: 0.8, ease: "power1.inOut" }, "start+=0.6")
+        .to(img2Ref.current, { opacity: 1, duration: 0.8, ease: "power1.inOut" }, "start+=0.6")
+
         // Phase 1b: Work Experience Header & Intern Content slide in
         .to(expContainerRef.current, { opacity: 1, duration: 0.5 }, "start+=1.2")
         .fromTo(
@@ -50,6 +58,9 @@ const Workflow = () => {
 
       // Phase 2: Person moves Left to Right (Junior Part)
       tl.to(personRef.current, { x: "-5vw", ease: "power2.inOut", duration: 2 }, "next")
+        // Crossfade me_2 -> me_3
+        .to(img2Ref.current, { opacity: 0, duration: 0.8, ease: "power1.inOut" }, "next+=0.3")
+        .to(img3Ref.current, { opacity: 1, duration: 0.8, ease: "power1.inOut" }, "next+=0.3")
         .to(exp1Ref.current, { x: "50%", opacity: 0, ease: "power2.in", duration: 1 }, "next")
         .fromTo(
           exp2Ref.current,
@@ -65,27 +76,29 @@ const Workflow = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen w-full bg-background overflow-hidden flex items-center justify-center"
+      className="relative md:h-screen w-full bg-background overflow-hidden flex items-center justify-center"
     >
       {/* Background/Fixed Person - Centered Vertically */}
       <div
         ref={personRef}
-        className="hidden md:block absolute right-[5%] top-[57%] -translate-y-1/2 w-[22vw] h-[65vh] z-50 pointer-events-none"
+        className="hidden md:block absolute right-[5%] top-[54%] -translate-y-1/2 w-[30vw] h-[65vh] z-50 pointer-events-none"
       >
-        <Image
-          src="/person-dummy.png"
-          alt="Afnan"
-          fill
-          className="object-contain"
-          priority
-        />
+        <div ref={img1Ref} className="absolute inset-0">
+          <Image src="/me_1.png" alt="Afnan" fill className="object-contain" priority />
+        </div>
+        <div ref={img2Ref} className="absolute inset-0">
+          <Image src="/me_2.png" alt="Afnan" fill className="object-contain" priority />
+        </div>
+        <div ref={img3Ref} className="absolute inset-0">
+          <Image src="/me_3.png" alt="Afnan" fill className="object-contain" priority />
+        </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="relative w-full max-w-7xl mx-auto px-4 h-full flex items-center justify-center">
+      <div className="relative w-full max-w-7xl mx-auto px-4 md:h-full flex items-center justify-center">
         
-        {/* Phase 0: Workflow Grid */}
-        <div ref={bentoRef} className="w-full max-h-[90vh] flex flex-col items-center justify-center">
+        {/* Phase 0: Workflow Grid (hidden on mobile) */}
+        <div ref={bentoRef} className="hidden md:flex w-full max-h-[90vh] flex-col items-center justify-center">
           <div className="w-full scale-[0.8] lg:scale-90 origin-center">
             <MagicBento
               textAutoHide={true}
@@ -141,9 +154,9 @@ const Workflow = () => {
         </div>
 
         {/* Mobile View: Static Stack */}
-        <div className="md:hidden flex flex-col space-y-12 w-full pt-10 px-4">
+        <div className="md:hidden flex flex-col space-y-12 w-full py-16 px-4">
           <div className="text-center mb-4">
-            <h2 className="text-3xl font-bold mb-2 tracking-tight">Workflow</h2>
+            <h2 className="text-3xl font-bold mb-2 tracking-tight">Work Experience</h2>
           </div>
           <div className="space-y-8">
             <div className="space-y-2 border-l-2 border-primary pl-6">

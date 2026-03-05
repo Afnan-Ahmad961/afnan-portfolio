@@ -19,6 +19,9 @@ export default function Hero() {
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
 
+        // Skip animation on mobile
+        if (window.innerWidth < 768) return;
+
         const imgW = 1280;
         const imgH = 960;
         const targetRect = { x: 500, y: 380, width: 399, height: 223 };
@@ -63,8 +66,8 @@ export default function Hero() {
                     ease: "none"
                 }),
                 snap: {
-                    snapTo: (progress: number, self: ScrollTrigger) => {
-                        if (self.direction === -1) return progress;
+                    snapTo: (progress: number, self?: ScrollTrigger) => {
+                        if (self && self.direction === -1) return progress;
                         return progress < 0.25 ? 0 : 1;
                     },
                     duration: 0.4,
@@ -83,7 +86,7 @@ export default function Hero() {
     return (
         <section
             ref={containerRef}
-            className="relative w-full h-[200vh] bg-background z-0"
+            className="relative w-full h-[200vh] bg-background z-0 hidden md:block"
         >
             <div
                 ref={stickyRef}
