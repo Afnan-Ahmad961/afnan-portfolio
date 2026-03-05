@@ -147,6 +147,7 @@ const ParticleCard: React.FC<{
     magnetismAnimationRef.current?.kill();
 
     particlesRef.current.forEach(particle => {
+      gsap.killTweensOf(particle);
       gsap.to(particle, {
         scale: 0,
         opacity: 0,
@@ -213,6 +214,14 @@ const ParticleCard: React.FC<{
 
     const handleMouseEnter = () => {
       isHoveredRef.current = true;
+
+      // Force-remove any lingering particles from a previous hover cycle
+      element.querySelectorAll('.particle').forEach(p => {
+        gsap.killTweensOf(p);
+        p.remove();
+      });
+      particlesRef.current = [];
+
       animateParticles();
 
       if (enableTilt) {

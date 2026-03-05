@@ -19,6 +19,9 @@ export default function Hero() {
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
 
+        // Skip animation on mobile
+        if (window.innerWidth < 768) return;
+
         const imgW = 1280;
         const imgH = 960;
         const targetRect = { x: 500, y: 380, width: 399, height: 223 };
@@ -63,51 +66,27 @@ export default function Hero() {
                     ease: "none"
                 }),
                 snap: {
-                    snapTo: [0, 1],
-                    duration: 0.2,
+                    snapTo: (progress: number, self?: ScrollTrigger) => {
+                        if (self && self.direction === -1) return progress;
+                        return progress < 0.25 ? 0 : 1;
+                    },
+                    duration: 0.4,
                     delay: 0,
-                    ease: "power1.inOut"
+                    ease: "power2.inOut"
                 }
             });
-
-            // Bridge Trigger: Force transition to eliminate the black flicker
-            const nextSection = containerRef.current.nextElementSibling as HTMLElement;
-            if (nextSection) {
-                ScrollTrigger.create({
-                    trigger: containerRef.current,
-                    start: "bottom bottom",
-                    onLeave: () => {
-                        window.scrollTo({
-                            top: nextSection.offsetTop,
-                            behavior: "auto"
-                        });
-                    }
-                });
-
-                ScrollTrigger.create({
-                    trigger: nextSection,
-                    start: "top bottom",
-                    onEnterBack: () => {
-                        window.scrollTo({
-                            top: containerRef.current!.offsetTop + containerRef.current!.offsetHeight - window.innerHeight,
-                            behavior: "auto"
-                        });
-                    }
-                });
-            }
 
         }, containerRef);
 
         return () => {
             ctx.revert();
-            ScrollTrigger.getAll().forEach(st => st.kill());
         };
     }, []);
 
     return (
         <section
             ref={containerRef}
-            className="relative w-full h-[200vh] bg-background z-0"
+            className="relative w-full h-[200vh] bg-background z-0 hidden md:block"
         >
             <div
                 ref={stickyRef}

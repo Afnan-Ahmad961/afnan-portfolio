@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import LogoLoop from "@/components/LogoLoop";
-import { motion } from "framer-motion";
 
 export default function About() {
   const imageLogos = [
@@ -26,11 +25,7 @@ export default function About() {
         {/* Main About Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
           {/* Left: Image */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            viewport={{ once: true }}
+          <div
             className="relative h-96 w-full lg:h-full lg:min-h-96 flex items-center justify-center"
           >
             <div className="relative w-full h-full max-w-sm">
@@ -42,14 +37,10 @@ export default function About() {
                 priority
               />
             </div>
-          </motion.div>
+          </div>
 
           {/* Right: Content */}
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            viewport={{ once: true }}
+          <div
             className="space-y-6"
           >
             <div>
@@ -70,11 +61,7 @@ export default function About() {
             </p>
 
             {/* Technologies Section */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
-              viewport={{ once: true }}
+            <div
               className="space-y-8"
             >
               <div>
@@ -97,8 +84,8 @@ export default function About() {
                 fadeOutColor="#0c0a09"
                 ariaLabel="Technology partners"
               />
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
