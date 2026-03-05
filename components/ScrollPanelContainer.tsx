@@ -16,6 +16,9 @@ export default function ScrollPanelContainer({ children }: ScrollPanelContainerP
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Skip pinning animation on mobile
+    if (window.innerWidth < 768) return;
+
     const ctx = gsap.context(() => {
       const panels = gsap.utils.toArray<HTMLElement>(".scroll-panel", containerRef.current);
       const firstPanel = panels[0];
