@@ -97,7 +97,7 @@ export default function Portfolio() {
         <div className="overflow-hidden">
           <div
             ref={trackRef}
-            className="flex flex-col md:flex-row gap-6 lg:gap-8 md:pl-20"
+            className="flex flex-col md:flex-row gap-6 lg:gap-8 md:px-20"
           >
             {portfolioItems.map((item, idx) => (
               <div

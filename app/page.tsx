@@ -5,6 +5,7 @@ import Workflow from "@/components/sections/Workflow";
 import ScrollProgress from "@/components/ScrollProgress";
 import Contact from "@/components/sections/Contact";
 import Hero from "@/components/sections/Hero";
+import Footer from "@/components/sections/Footer";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         <Workflow key="workflow" />
         <Contact key="contact" />
       </ScrollPanelContainer>
+      <Footer />
     </>
   );
 }
