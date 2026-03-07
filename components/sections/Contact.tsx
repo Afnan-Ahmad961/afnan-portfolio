@@ -63,14 +63,23 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      // Simulate form submission
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Something went wrong');
+      }
+
       setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', message: '' });
-
       setTimeout(() => setSubmitted(false), 5000);
     } catch (error) {
       console.error('Form submission error:', error);
+      setErrors({ form: error instanceof Error ? error.message : 'Failed to send message. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -99,10 +108,16 @@ export default function Contact() {
 
           <div className="border-2 border-accent/80 rounded-lg p-8 md:p-12 bg-background/50 backdrop-blur-sm">
             {submitted && (
-              <div className="mb-6 p-4 bg-accent/10 border border-accent rounded-lg">
-                <p className="text-accent font-medium">
+              <div className="mb-6 p-4 bg-primary/10 border border-primary rounded-lg">
+                <p className="text-primary font-bold tracking-wide">
                   Thank you! Your message has been sent successfully.
                 </p>
+              </div>
+            )}
+
+            {errors.form && (
+              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg">
+                <p className="text-red-500 font-medium">{errors.form}</p>
               </div>
             )}
 
