@@ -24,7 +24,7 @@ export default function Hero() {
 
         const imgW = 1280;
         const imgH = 960;
-        const targetRect = { x: 500, y: 380, width: 399, height: 223 };
+        const targetRect = { x: 455, y: 370, width: 399, height: 223 };
 
         const ctx = gsap.context(() => {
             if (!containerRef.current || !imageRef.current || !stickyRef.current) return;
@@ -51,6 +51,10 @@ export default function Hero() {
                 transformOrigin: "center center"
             });
 
+            // Teleport flags to prevent re-triggering
+            let hasTeleportedForward = false;
+            let hasTeleportedBack = false;
+
             // Main zoom logic using manual pinning to prevent gap
             ScrollTrigger.create({
                 trigger: containerRef.current,
@@ -73,6 +77,39 @@ export default function Hero() {
                     duration: 0.4,
                     delay: 0,
                     ease: "power2.inOut"
+                },
+                onUpdate: (self) => {
+                    // Reset forward teleport flag when scrolling back up
+                    if (self.progress < 0.5) hasTeleportedForward = false;
+
+                    // Teleport to About section once snap reaches the end
+                    if (self.progress >= 0.999 && self.direction === 1 && !hasTeleportedForward && containerRef.current) {
+                        hasTeleportedForward = true;
+                        hasTeleportedBack = false;
+                        const targetY = containerRef.current.offsetTop + containerRef.current.offsetHeight;
+                        setTimeout(() => {
+                            window.scrollTo({ top: targetY, behavior: "instant" });
+                        }, 100);
+                    }
+                }
+            });
+
+            // Reverse teleport: About -> Hero (zoomed-in state)
+            ScrollTrigger.create({
+                trigger: containerRef.current,
+                start: "bottom top",
+                onEnterBack: () => {
+                    if (!hasTeleportedBack && containerRef.current) {
+                        hasTeleportedBack = true;
+                        hasTeleportedForward = false;
+                        const heroEndPos = containerRef.current.offsetTop + containerRef.current.offsetHeight - window.innerHeight;
+                        setTimeout(() => {
+                            window.scrollTo({ top: heroEndPos, behavior: "instant" });
+                        }, 100);
+                    }
+                },
+                onLeave: () => {
+                    hasTeleportedBack = false;
                 }
             });
 
