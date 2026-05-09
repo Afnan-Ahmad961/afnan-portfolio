@@ -18,11 +18,19 @@ interface PortfolioItem {
 
 const portfolioItems: PortfolioItem[] = [
   {
-    title: 'EternalSec',
-    description: 'Portfolio site for a cybersecurity firm. High-performance landing page with secure contact forms and service showcases.',
-    image: '/project_images/eternalsec.png',
-    tech: ['React', 'Tailwind'],
-    url: 'https://eternalsec.vercel.app',
+    title: "Jupiterwardrobe",
+    description: "Ecommerce site for a clothing brand. Features include dashboard, redis caching, automated email notifications and account management.",
+    image: "/project_images/jpt.png",
+    tech: ["Next.js", "Medusa JS", "TypeScript"],
+    url: "https://jupiterwardrobe.com/",
+
+  },
+  {
+    title: 'FrosthFlour',
+    description: 'Ecommerce site for a bakery. Features include product catalog, shopping cart, and seamless checkout integration.',
+    image: '/project_images/fnf.png',
+    tech: ['Next.js', 'TypeScript'],
+    url: 'https://www.frostnflour.pk/',
   },
   {
     title: 'SecWall',
@@ -32,18 +40,18 @@ const portfolioItems: PortfolioItem[] = [
     url: 'https://securitywall.co/',
   },
   {
+    title: 'EternalSec',
+    description: 'Portfolio site for a cybersecurity firm. High-performance landing page with secure contact forms and service showcases.',
+    image: '/project_images/eternalsec.png',
+    tech: ['React', 'Tailwind'],
+    url: 'https://eternalsec.vercel.app',
+  },
+  {
     title: 'Abeera',
     description: 'Portfolio website for an artist with a modern look. Focus on gallery layout and visual storytelling.',
     image: '/project_images/abeera.png',
     tech: ['React', 'Tailwind'],
     url: 'https://abeera-xi.vercel.app/',
-  },
-  {
-    title: 'FrosthFlour',
-    description: 'Ecommerce site for a bakery. Features include product catalog, shopping cart, and seamless checkout integration.',
-    image: '/project_images/fnf.png',
-    tech: ['Medusa JS', 'Stripe'],
-    url: 'https://www.frostnflour.pk/',
   },
 ];
 
@@ -60,15 +68,20 @@ export default function Portfolio() {
     if (!section || !track) return;
 
     const ctx = gsap.context(() => {
-      const scrollAmount = track.scrollWidth - track.parentElement!.clientWidth;
+      const getScrollAmount = () => {
+        const scrollAmount = track.scrollWidth - track.parentElement!.clientWidth;
+        // Adding extra width to ensure the last card is fully visible and not cut off
+        return scrollAmount + 40; 
+      };
 
       gsap.to(track, {
-        x: -scrollAmount,
+        x: () => -getScrollAmount(),
         ease: 'none',
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: () => '+=' + (track.scrollWidth - track.parentElement!.clientWidth),
+          // Increased animation window length for smoother scrolling with more cards
+          end: () => '+=' + track.scrollWidth,
           pin: true,
           pinSpacing: true,
           scrub: 1,
